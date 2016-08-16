@@ -3,4 +3,9 @@ FactoryGirl.define do
     title "MyString have to min 15 character"
     body "MyText"
   end
+
+  factory :invalid_question, class: "Question" do
+    title nil
+    body nil
+  end
 end
