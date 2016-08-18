@@ -4,7 +4,7 @@ FactoryGirl.define do
     question  
   end
 
-  factory :invalid_answer, class: "Answer" do	
-  	content ""
+  factory :invalid_answer, class: "Answer" do 
+    content ""
   end
 end
