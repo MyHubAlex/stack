@@ -32,8 +32,9 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 gem 'slim-rails'
-
+gem 'devise'
 gem 'rails-controller-testing'
+gem 'launchy'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -57,6 +58,7 @@ end
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'capybara'
 end
 
 
