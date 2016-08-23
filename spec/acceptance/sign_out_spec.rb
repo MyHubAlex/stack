@@ -11,6 +11,7 @@ feature 'User sign out', %q{
   scenario 'authenticated user sign out' do
     sign_in(user)
     visit questions_path
+    save_and_open_page
     click_on 'Sign out'    
   end
 end
