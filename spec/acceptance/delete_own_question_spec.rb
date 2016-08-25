@@ -7,7 +7,7 @@ feature 'User can delete own question', %q{
 } do 
 
   given(:user) { create(:user) }
-  given(:question) { create(:question, user) }
+  given(:question) { create(:question, user: user) }
 
   scenario 'Authenticated user delete own question' do
     sign_in(user)

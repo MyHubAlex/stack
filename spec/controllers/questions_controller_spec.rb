@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 2) }
+    sign_in_user
+    let(:questions) { create_list(:question, 2, user: @user) }
     
     before do
       get :index
@@ -18,7 +19,8 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
-    let(:question) { create(:question) }
+    sign_in_user
+    let(:question) { create(:question, user: @user) }
 
     before {get :show, params: {id: question}}
 
@@ -49,11 +51,11 @@ RSpec.describe QuestionsController, type: :controller do
     
     context 'with valid attributes' do   
       it 'add a new question into database' do
-        expect{ post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)          
+        expect{ post :create, params: { question: attributes_for(:question), user: @user } }.to change(Question, :count).by(1)          
       end
 
       it 'redirect to show view' do
-        post :create, params: { question: attributes_for(:question) }
+        post :create, params: { question: attributes_for(:question), user: @user}
         expect(response).to redirect_to assigns(:question)   
       end  
     end
@@ -66,6 +68,36 @@ RSpec.describe QuestionsController, type: :controller do
       it 're-renders new view' do
         post :create, params: { question: attributes_for(:invalid_question) }
         expect(response).to render_template :new 
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    sign_in_user    
+    
+    context 'delete own question' do
+      let!(:question) { create(:question, user: @user) }
+      it 'delete own the question' do
+        expect { delete :destroy, params: { id: question, user: @user } }.to change(Question, :count).by(-1)
+      end
+
+      it 'redirect to index view' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to questions_path
+      end
+    end
+
+    context 'delete a strange question' do
+      let!(:user) { create(:user) }
+      let!(:question) { create(:question, user: user) }
+
+      it 'delete the strange question' do
+        expect { delete :destroy, params: { id: question, user: user } }.to_not change(Question, :count)
+      end
+
+      it 'redirect to question' do
+        delete :destroy, params: { id: question, user: user }
+        expect(response).to redirect_to question
       end
     end
   end
