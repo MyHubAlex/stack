@@ -1,10 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:question) { create(:question) }
+  let(:user) { create(:user) }
+  let(:question) { create(:question, user: user) }
 
   describe 'GET #new' do
-    before { get :new, params: { question_id: question } }
+    before { get :new, params: { question_id: question, user: user } }
 
     it 'assigns the requested question to @question' do      
       expect(assigns(:answer)).to be_a_new(Answer)      
@@ -37,5 +38,9 @@ RSpec.describe AnswersController, type: :controller do
         expect(request).to render_template :new
       end
     end
+  end
+
+  describe 'DELETE #destroy' do
+    
   end
 end

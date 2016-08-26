@@ -7,7 +7,7 @@ feature 'show the list of questions', %q{
 } do
 
   given(:user) { create(:user) }
-  given!(:questions) { create_list(:question, 10) }
+  given!(:questions) { create_list(:question, 10, user: user) }
 
   scenario 'Authenticated user show a list of questions' do
     sign_in(user)

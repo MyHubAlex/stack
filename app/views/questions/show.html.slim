@@ -1,6 +1,9 @@
 h2= @question.title
 p= @question.body
 
+- if @question.user == current_user
+    li= link_to 'Delete question', @question, method: :delete
+
 = form_for [@question, @answer] do |f|
 
   = f.label :content, "Write your answer: "

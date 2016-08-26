@@ -10,7 +10,6 @@ feature 'User sign up', %q{
 
     scenario 'sign up with valid attribute' do
       sign_up(user)
-
       expect(page).to have_content "Welcome! You have signed up successfully."
       expect(current_path).to eq root_path  
     end

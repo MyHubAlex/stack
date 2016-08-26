@@ -7,14 +7,12 @@ feature 'show a question and answers', %q{
 } do
 
   given(:user) { create(:user) }
-  given!(:question) { create(:question) }
+  given!(:question) { create(:question, user: user) }
   given!(:answers) { create_list(:answer, 10, question: question) }
 
   scenario 'Autenticated user show answers' do
     sign_in(user)
     visit question_path(question)
-
-    #save_and_open_page
 
     expect(page).to have_content question.title
     expect(page).to have_content question.body
