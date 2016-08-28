@@ -12,5 +12,7 @@ p= @question.body
   = f.submit 'Post'
 
 ul
- - @question.answers.each do |q|
-  p= q.content 
+  - @question.answers.each do |q|
+    - if q.persisted? 
+        p= q.content
+        li= link_to 'Delete answer', q,method: :delete

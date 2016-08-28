@@ -77,7 +77,7 @@ RSpec.describe QuestionsController, type: :controller do
     
     context 'delete own question' do
       let!(:question) { create(:question, user: @user) }
-      it 'delete own the question' do
+      it 'delete the own question' do
         expect { delete :destroy, params: { id: question, user: @user } }.to change(Question, :count).by(-1)
       end
 
@@ -98,6 +98,79 @@ RSpec.describe QuestionsController, type: :controller do
       it 'redirect to question' do
         delete :destroy, params: { id: question, user: user }
         expect(response).to redirect_to question
+      end
+    end
+  end
+
+  describe 'GET #edit' do
+    sign_in_user
+    let(:question) { create(:question, user: @user) }
+    before { get :edit, params: { id: question }  }
+
+    it 'assigns the edit Question to @question' do
+      expect(assigns(:question)).to eq question
+    end
+
+    it 'renders edit view' do
+      expect(response).to render_template :edit
+    end
+  end
+
+  describe 'PATCH #update' do
+    sign_in_user
+    let!(:question) { create(:question, user: @user) }
+    
+    context 'edit own question with valid attributes' do
+      it 'assigns the requested question to @question' do
+        patch :update, params: { id: question, question: attributes_for(:question) }
+        expect(assigns(:question)).to eq question
+      end 
+
+      it 'changes questions attributes' do
+        patch :update, params: { id: question, question: { title: 'new title*new title*new title', body: 'new body', user: @user } }
+        question.reload
+        expect(question.title).to eq 'new title*new title*new title'
+        expect(question.body).to eq 'new body'
+      end  
+
+      it 'redirects to the updates question' do
+        patch :update, params: { id: question, question: attributes_for(:question) }
+        expect(response).to redirect_to question
+      end
+    end
+
+    context 'edit foreign question with valid attributes' do
+      let(:foreign_user) { create(:user) }
+      let(:question) { create(:question, user: foreign_user) }
+
+      it 'assigns the requested question to @question' do
+        patch :update, params: { id: question, question: attributes_for(:question) }
+        expect(assigns(:question)).to eq question
+      end 
+
+      it 'changes questions attributes' do
+        patch :update, params: { id: question, question: { title: 'new title*new title*new title', body: 'new body', user: @user } }
+        question.reload
+        expect(question.title).to eq question.title
+        expect(question.body).to eq question.body
+      end  
+
+      it 're-renders to edit view' do
+        patch :update, params: { id: question, question: { title: 'new title*new title*new title', body: 'new body', user: @user } }
+        expect(response).to render_template :edit
+      end
+    end
+
+    context 'invalid attributes' do
+      before { patch :update, params: { id: question, question: { title: 'nil', body: 'new body', user: @user } } }
+      it 'changes questions invalid attributes' do
+        question.reload
+        expect(question.title).to eq question.title
+        expect(question.body).to eq question.body
+      end
+
+      it 're-renders to edit view' do
+        expect(response).to render_template :edit
       end
     end
   end
