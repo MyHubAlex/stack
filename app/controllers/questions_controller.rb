@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_qusetion, only: [:show, :destroy, :edit, :update]
+  before_action :load_question, only: [:show, :destroy, :edit, :update]
 
   def index
     @questions = Question.all
@@ -26,7 +26,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if @question.user == current_user
+    if  current_user.belongs_to_obj(@question)
       @question.destroy
       flash[:notice] = 'Your question was deleted'
       redirect_to questions_path
@@ -40,7 +40,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if @question.user == current_user && @question.update(question_params)
+    if current_user.belongs_to_obj(@question) && @question.update(question_params)
       flash[:notice] = 'Your question was changed' 
       redirect_to @question  
     else
@@ -51,7 +51,7 @@ class QuestionsController < ApplicationController
 
   private 
 
-  def load_qusetion
+  def load_question
     @question = Question.find(params[:id])
   end
 

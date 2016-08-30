@@ -16,6 +16,7 @@ feature 'User can delete own question', %q{
     click_on 'Delete question'
 
     expect(page).to have_content 'Your question was deleted'
+    expect(page).to_not have_content question.title
     expect(current_path).to eq questions_path  
   end
 

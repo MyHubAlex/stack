@@ -7,7 +7,7 @@ feature 'show the list of questions', %q{
 } do
 
   given(:user) { create(:user) }
-  given!(:questions) { create_list(:question, 10, user: user) }
+  given!(:questions) { [create(:question, user: user), Question.create(title: '1234567890123123123', body: 'abracadabra', user: user)] }
 
   scenario 'Authenticated user show a list of questions' do
     sign_in(user)
@@ -16,8 +16,7 @@ feature 'show the list of questions', %q{
     
     questions.each do |question|
       expect(page).to have_content question.title
-    end
-    expect(current_path).to eq questions_path
+    end    
   end
 
   scenario 'UnAuthenticated user show a list of questions' do
@@ -25,7 +24,6 @@ feature 'show the list of questions', %q{
     
     questions.each do |question|
       expect(page).to have_content question.title
-    end
-    expect(current_path).to eq questions_path
+    end    
   end
-end
+end 

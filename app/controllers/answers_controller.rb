@@ -1,26 +1,21 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :get_question, only: [:new, :create]
-     
-  def new
-    @answer = @question.answers.new 
-  end
+  before_action :load_answer, except: [:create]
 
   def create
     @answer = @question.answers.new(answer_params)
-    @answer.user = current_user
+    @answer.user_id = current_user.id
     if @answer.save
       flash[:notice] = "Your answer created"
-      redirect_to @question
-    else
-      render :new   
     end
+    redirect_to @question
     
   end
 
   def destroy
     @answer = Answer.find(params[:id])
-    if @answer.user == current_user
+    if current_user.belongs_to_obj(@answer)
       @answer.destroy
       flash[:notice] = 'Your answer was deleted'      
     end
@@ -35,7 +30,7 @@ class AnswersController < ApplicationController
   def update
     @answer = Answer.find(params[:id])
     @question = @answer.question
-    if @answer.user == current_user && @answer.update(answer_params) 
+    if current_user.belongs_to_obj(@answer) && @answer.update(answer_params) 
        flash[:notice] = 'Your answer was changed'
        redirect_to @question       
     else
@@ -45,6 +40,9 @@ class AnswersController < ApplicationController
 
   private
 
+  def load_answer
+    @answer = Answer.find(params[:id])
+  end
   def get_question
     @question = Question.find(params[:question_id])
   end

@@ -6,28 +6,21 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question, user: @user) }  
   let!(:answer) { create(:answer, question: question, user: @user) }
   
-  describe 'GET #new' do
-    before { get :new, params: { question_id: question } }
-
-    it 'assigns the requested question to @question' do      
-      expect(assigns(:answer)).to be_a_new(Answer)  
-    end
-
-    it 'renders a new view' do
-      expect(request).to render_template :new
-    end
-  end
-
   describe 'POST #create' do
  
     context 'with valid attributes' do
       it 'add a new item into datebase' do
-        expect{ post :create, params: { question_id: question, answer: attributes_for(:answer, user_id: @user) } }.to change(question.answers, :count).by(1)
+        expect{ post :create, params: { question_id: question, answer: attributes_for(:answer) } }.to change(question.answers, :count).by(1)
       end
 
       it 'redirect to view question' do
-        post :create , params: { question_id: question, answer: attributes_for(:answer, user_id: @user) }
+        post :create , params: { question_id: question, answer: attributes_for(:answer) }
         expect(request).to redirect_to question
+      end
+
+      it 'new question belongs to user' do
+        post :create , params: { question_id: question, answer: attributes_for(:answer) }
+        expect(question.user_id).to eq @user.id
       end
     end
 
@@ -36,9 +29,9 @@ RSpec.describe AnswersController, type: :controller do
         expect{ post :create, params: { question_id: question, answer: attributes_for(:invalid_answer) } }.to_not change(Answer, :count)
       end
 
-      it 're-renders new view' do
-        post :create, params: { question_id: question, answer: attributes_for(:invalid_answer) } 
-        expect(request).to render_template :new
+      it 'redirect to view question' do
+        post :create , params: { question_id: question, answer: attributes_for(:answer) }
+        expect(request).to redirect_to question
       end
     end
   end
@@ -86,8 +79,8 @@ RSpec.describe AnswersController, type: :controller do
   describe 'PATCH #update' do
 
     context 'update own answer with valid attributes' do
-      it 'assigns the update answer to @answer' do
-        patch :update, params: { id: answer, answer: attributes_for(:answer), question_id: question }
+      before { patch :update, params: { id: answer, answer: attributes_for(:answer), question_id: question } }
+      it 'assigns the update answer to @answer' do        
         expect(assigns(:answer)).to eq answer
       end
 
@@ -98,7 +91,6 @@ RSpec.describe AnswersController, type: :controller do
       end 
 
       it 'redirect to questin' do
-        patch :update, params: { id: answer, answer: attributes_for(:answer), question_id: question }
         expect(response).to redirect_to question
       end
     end

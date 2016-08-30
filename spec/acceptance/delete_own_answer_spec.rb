@@ -10,16 +10,17 @@ feature 'User can delete own aswer', %q{
   given!(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
-  scenario 'Authenticated user delete own question' do
+  scenario 'Authenticated user delete own answer' do
     sign_in(user)
     visit question_path(question)
     click_on "Delete answer"
 
     expect(page).to have_content 'Your answer was deleted'
+    expect(page).to_not have_content answer.content
     expect(current_path).to eq question_path(question)
   end
 
-  scenario 'Anauthenticated user delete question' do
+  scenario 'non authenticated user delete answer' do
     visit question_path(question)
     
     expect(page).to have_content 'Delete answer'    

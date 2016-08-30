@@ -23,5 +23,6 @@ feature 'User sign up', %q{
       click_on 'Sign up' 
 
       expect(current_path).to eq user_registration_path  
+      expect(page).to have_content "error"
     end
 end

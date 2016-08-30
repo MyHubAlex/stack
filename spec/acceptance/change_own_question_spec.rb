@@ -12,10 +12,15 @@ feature 'change own question',%q{
 
   scenario 'Authenticated user change own question' do
     sign_in(user)
-    visit edit_question_path(question) 
-    click_on 'Edit question'
+    visit question_path(question)
+    click_on "Edit question"
+    fill_in 'Title', with: 'new_title*new_title*new_title'
+    fill_in 'Body', with: 'new body'
+    click_on 'Save' 
 
     expect(page).to have_content 'Your question was changed'
+    expect(page).to have_content 'new_title*new_title*new_title'
+    expect(page).to have_content 'new body'
     expect(current_path).to eq question_path(question)
   end 
 
