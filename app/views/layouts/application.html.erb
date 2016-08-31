@@ -3,12 +3,36 @@
   <head>
     <title>Stack</title>
     <%= csrf_meta_tags %>
-
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
+    <div class="header">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-10">
+            <h1>Database of answers to questions</h1>
+          </div>
+          <div>
+            <ul class="nav nav-pills pull-right">
+              <% if user_signed_in?%>          
+                <li><%= link_to 'Sign out', destroy_user_session_path, method: :delete %></li>                
+              <% else %>    
+                <li><%= link_to 'Sign Up', new_user_registration_path %></li>
+                <li><%= link_to 'Sign in', new_user_session_path %></a></li>
+              <% end %>  
+            </ul>
+          </div>
+        </div>
+      </div>  
+    </div>  
+
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+
     <%= yield %>
   </body>
 </html>

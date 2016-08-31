@@ -1,0 +1,19 @@
+h2= @question.title
+p= @question.body
+
+- if !current_user.nil? && current_user.belongs_to_obj(@question)
+    li= link_to 'Delete question', @question, method: :delete
+    li= link_to 'Edit question', edit_question_path(@question)
+
+= form_for [@question, @answer] do |f|
+
+  = f.label :content, "Write your answer: "
+  = f.text_field :content
+
+  = f.submit 'Post'
+
+ul
+  - @question.answers.each do |q|
+    - if q.persisted? 
+        p= q.content
+        li= link_to 'Delete answer', q,method: :delete
