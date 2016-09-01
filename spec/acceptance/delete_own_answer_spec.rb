@@ -23,6 +23,6 @@ feature 'User can delete own aswer', %q{
   scenario 'non authenticated user delete answer' do
     visit question_path(question)
     
-    expect(page).to have_content 'Delete answer'    
+    expect(page).to_not have_content 'Delete answer'    
   end
 end

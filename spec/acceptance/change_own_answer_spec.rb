@@ -23,13 +23,13 @@ feature 'change own answer',%q{
   scenario 'Non Authenticated user change own answer' do
     visit edit_answer_path(answer) 
        
-    expect(page).to_not have_content 'Edit question'
+    expect(page).to_not have_content 'Edit answer'
   end 
 
-  scenario 'Authenticated user change foreign question' do
+  scenario 'Authenticated user change foreign answer' do
     sign_in(user_alien)
     visit edit_question_path(question) 
 
-    expect(page).to_not have_content 'Edit question'
+    expect(page).to_not have_content 'Edit answer'
   end 
 end

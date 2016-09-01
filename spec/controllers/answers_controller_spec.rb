@@ -10,28 +10,28 @@ RSpec.describe AnswersController, type: :controller do
  
     context 'with valid attributes' do
       it 'add a new item into datebase' do
-        expect{ post :create, params: { question_id: question, answer: attributes_for(:answer) } }.to change(question.answers, :count).by(1)
+        expect{ post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js } }.to change(question.answers, :count).by(1)
       end
 
-      it 'redirect to view question' do
-        post :create , params: { question_id: question, answer: attributes_for(:answer) }
-        expect(request).to redirect_to question
+      it 'render create temlpate' do
+        post :create , params: { question_id: question, answer: attributes_for(:answer), format: :js }
+        expect(request).to render_template :create
       end
 
       it 'new question belongs to user' do
-        post :create , params: { question_id: question, answer: attributes_for(:answer) }
+        post :create , params: { question_id: question, answer: attributes_for(:answer), format: :js }
         expect(question.user_id).to eq @user.id
       end
     end
 
     context 'with invalid attributes' do
       it 'does not save a new item into database' do
-        expect{ post :create, params: { question_id: question, answer: attributes_for(:invalid_answer) } }.to_not change(Answer, :count)
+        expect{ post :create, params: { question_id: question, answer: attributes_for(:invalid_answer), format: :js } }.to_not change(Answer, :count)
       end
 
-      it 'redirect to view question' do
-        post :create , params: { question_id: question, answer: attributes_for(:answer) }
-        expect(request).to redirect_to question
+      it 'render create temlpate' do
+        post :create , params: { question_id: question, answer: attributes_for(:answer), format: :js }
+        expect(request).to render_template :create
       end
     end
   end

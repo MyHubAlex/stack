@@ -9,18 +9,13 @@ feature 'create an answer to the question', %q{
     given(:user) { create(:user) }
     given(:question) { create(:question, user: user ) }
 
-    scenario 'Authenticated user answers to the question' do
+    scenario 'Authenticated user answers to the question', js: true do
       sign_in(user)
       visit question_path(question)
 
-      #save_and_open_page
-      
       fill_in 'Write your answer:', with: 'Again bla bla bla'
       click_on 'Post'
-      
-      #save_and_open_page
-
-      expect(page).to have_content 'Your answer created'
+  
       expect(page).to have_content 'Again bla bla bla'
       expect(current_path).to eq question_path(question)
     end  
