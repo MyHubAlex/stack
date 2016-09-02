@@ -1,0 +1,7 @@
+ul
+  - if answer.persisted? 
+    p = answer.content
+    - if current_user && current_user.belongs_to_obj(answer) 
+        li= link_to 'Edit answer', edit_answer_path(answer)
+        li= link_to 'Delete answer', answer, remote: true, method: :delete
+    
