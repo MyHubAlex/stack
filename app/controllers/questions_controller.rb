@@ -40,13 +40,9 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if current_user.belongs_to_obj(@question) && @question.update(question_params)
-      flash[:notice] = 'Your question was changed' 
-      redirect_to @question  
-    else
-      flash[:notice] = 'Changes not save'
-      render :edit 
-    end    
+    if current_user.belongs_to_obj(@question) 
+      @question.update(question_params)
+    end  
   end
 
   private 

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'acceptance_helper'
 
 feature 'change own question',%q{
   In order to user can change own question
@@ -10,7 +10,7 @@ feature 'change own question',%q{
   given(:user_alien) { create(:user) }
   given(:question) { create(:question, user: user) }
 
-  scenario 'Authenticated user change own question' do
+  scenario 'Authenticated user change own question', js: true do
     sign_in(user)
     visit question_path(question)
     click_on "Edit question"
@@ -18,9 +18,10 @@ feature 'change own question',%q{
     fill_in 'Body', with: 'new body'
     click_on 'Save' 
 
-    expect(page).to have_content 'Your question was changed'
-    expect(page).to have_content 'new_title*new_title*new_title'
-    expect(page).to have_content 'new body'
+    within '.question' do
+      expect(page).to have_content 'new_title*new_title*new_title'
+      expect(page).to have_content 'new body'
+    end
     expect(current_path).to eq question_path(question)
   end 
 

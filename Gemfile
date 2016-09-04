@@ -35,6 +35,7 @@ gem 'slim-rails'
 gem 'devise'
 gem 'rails-controller-testing'
 gem 'launchy'
+gem 'require_relative'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -52,6 +53,7 @@ end
 
 
 group :test, :development do
+  gem 'rspec'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'database_cleaner'
