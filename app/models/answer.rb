@@ -7,8 +7,10 @@ class Answer < ApplicationRecord
   default_scope { order(best: :desc, created_at: :asc )}
 
   def is_best
-    self.question.answers.where(best: true).update_all(best: false)
-    self.best = true
-    self.save
+    Answer.transaction do
+      self.question.answers.where(best: true).update_all(best: false)
+      self.best = true
+      self.save
+    end
   end
 end

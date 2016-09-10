@@ -3,6 +3,8 @@
     
   <% end %>
 <% else %>
-  $('.best_answer').removeClass('best_answer');
-  $('.answer-<%= @answer.id %>').addClass('best_answer');    
+  $('.best_answer').removeClass('best_answer'); 
+  elem = $('.answer-<%= @answer.id %>'); 
+  $('.answers').prepend(elem);    
+  $(elem).addClass('best_answer');
 <% end %>  
