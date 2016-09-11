@@ -9,8 +9,7 @@ class Answer < ApplicationRecord
   def is_best
     Answer.transaction do
       self.question.answers.where(best: true).update_all(best: false)
-      self.best = true
-      self.save
+      self.update!(best: true)
     end
   end
 end

@@ -6,6 +6,13 @@ FactoryGirl.define do
     best false
   end
 
+  factory :answer_best, class: Answer do
+    content "bla bla"
+    question 
+    user 
+    best true
+  end
+
   factory :invalid_answer, class: "Answer" do 
     content ""
   end

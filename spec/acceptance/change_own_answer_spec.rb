@@ -37,8 +37,7 @@ feature 'change own answer',%q{
     visit question_path(question)  
 
     within ".answer-#{answer.id}" do
-      expect(page).to_not have_link('Edit answer')
-      expect(current_path).to eq question_path(question)
+      expect(page).to_not have_link('Edit answer')      
     end
   end 
 end
