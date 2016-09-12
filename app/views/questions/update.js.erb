@@ -1,0 +1,7 @@
+<% if @question.errors.present? %>
+  <% @question.errors.full_messages.each do |e| %>
+    $('.question_errors').html('<%= j e %>')
+  <% end %>
+<% else %>
+  	$('.question').html('<%= j render "question" %>')
+<% end %>  

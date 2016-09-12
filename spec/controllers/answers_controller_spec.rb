@@ -40,12 +40,12 @@ RSpec.describe AnswersController, type: :controller do
   
     context 'delete own answer' do
       it 'delete the own answer' do
-        expect { delete :destroy, params: { id: answer} }.to change(question.answers, :count).by(-1)
+        expect { delete :destroy, params: { id: answer, format: :js } }.to change(question.answers, :count).by(-1)
       end
 
-      it 'redirect to view question' do
-        delete :destroy, params: { id: answer}
-        expect(request).to redirect_to question
+      it 'render to destroy' do
+        delete :destroy, params: { id: answer, format: :js}
+        expect(request).to render_template :destroy
       end
     end
 
@@ -54,12 +54,12 @@ RSpec.describe AnswersController, type: :controller do
       let!(:foreign_answer) { create(:answer, question: question, user: foreign_user) }
 
       it 'delete the foreign answer' do
-        expect { delete :destroy, params: { id: foreign_answer} }.to_not change(Answer, :count)
+        expect { delete :destroy, params: { id: foreign_answer, format: :js} }.to_not change(Answer, :count)
       end
 
-      it 'redirect to view question' do
-        delete :destroy, params: { id: answer }
-        expect(request).to redirect_to question
+      it 'render to destroy template' do
+        delete :destroy, params: { id: answer, format: :js }
+        expect(request).to render_template :destroy
       end
     end
   end
@@ -71,27 +71,24 @@ RSpec.describe AnswersController, type: :controller do
       expect(assigns(:answer)).to eq answer
     end
 
-    it 'render edit view' do
-      expect(response).to render_template :edit
-    end
   end
 
   describe 'PATCH #update' do
 
     context 'update own answer with valid attributes' do
-      before { patch :update, params: { id: answer, answer: attributes_for(:answer), question_id: question } }
+      before { patch :update, params: { id: answer, answer: attributes_for(:answer), question_id: question }, format: :js }
       it 'assigns the update answer to @answer' do        
         expect(assigns(:answer)).to eq answer
       end
 
       it 'changes answer attributes' do
-        patch :update, params: { id: answer, answer: { content: 'new content' }, question_id: question}
+        patch :update, params: { id: answer, answer: { content: 'new content' }, question_id: question, format: :js}
         answer.reload
         expect(answer.content).to eq 'new content'
       end 
 
-      it 'redirect to questin' do
-        expect(response).to redirect_to question
+      it 'renders to update template' do
+        expect(response).to render_template :update
       end
     end
 
@@ -99,27 +96,48 @@ RSpec.describe AnswersController, type: :controller do
       let(:foreign_answer) { create(:answer, question: question)}
 
       it 'no changes answer attributes' do
-        patch :update, params: { id: foreign_answer, answer: { content: 'new content' }, question_id: question}
+        patch :update, params: { id: foreign_answer, answer: { content: 'new content' }, question_id: question, format: :js}
         answer.reload
         expect(answer.content).to eq foreign_answer.content
       end 
 
-      it 're-renders to view edit' do
-        patch :update, params: { id: foreign_answer, answer: attributes_for(:answer), question_id: question }
-        expect(response).to render_template :edit
+      it 'renders to update template' do
+        patch :update, params: { id: foreign_answer, answer: attributes_for(:answer), question_id: question, format: :js }
+        expect(response).to render_template :update
       end
     end
 
     context 'invalid attributes' do
-      before { patch :update, params: { id: answer, answer: { content: nil }, question_id: question } }
+      before { patch :update, params: { id: answer, answer: { content: nil }, question_id: question, format: :js } }
       it 'changes questions invalid attributes' do
         answer.reload
         expect(answer.content).to eq answer.content        
       end
 
-      it 're-renders to edit view' do
-        expect(response).to render_template :edit
+      it 'renders to update template' do
+        expect(response).to render_template :update
       end
     end
   end
+
+  describe 'PATCH #best' do
+    context 'select the best to own answer' do
+      let!(:best_answer) { create(:answer, question: question, user: @user, best: true )}
+      before { patch :best, params: { id: answer, answer: attributes_for(:answer), question_id: question, best: true }, format: :js }
+      before { answer.reload}
+      it 'assigns the best answer to @answer' do                
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'set to answer sign best' do                
+        expect(answer.best).to eq true
+      end
+      it 'another best anwser should be false' do
+        best_answer.reload
+        expect(best_answer.best).to eq false
+      end
+    end
+
+  end
 end
+

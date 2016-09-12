@@ -10,26 +10,34 @@ feature 'change own answer',%q{
   given(:user_alien) { create(:user) }
   given!(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
-
-  scenario 'Authenticated user change own answer' do
+  
+  scenario 'Authenticated user change own answer', js: true do
     sign_in(user)
-    visit edit_answer_path(answer) 
-    click_on 'Edit answer'
-    
-    expect(page).to have_content 'Your answer was changed'
-    expect(current_path).to eq question_path(question)
+    visit question_path(question)
+
+    within ".answer-#{answer.id}" do
+      click_on 'Edit answer'
+      fill_in 'Answer', with: 'new answer' 
+      click_on 'Save answer'
+
+      expect(page).to have_content('new answer')
+      expect(page).to_not have_link('Save answer')
+      expect(current_path).to eq question_path(question)
+    end
   end 
 
-  scenario 'Non Authenticated user change own answer' do
-    visit edit_answer_path(answer) 
+  scenario 'Non Authenticated user change own answer', js: true do
+    visit question_path(question) 
        
     expect(page).to_not have_content 'Edit answer'
   end 
 
-  scenario 'Authenticated user change foreign answer' do
+  scenario 'Authenticated user change foreign answer', js: true do
     sign_in(user_alien)
-    visit edit_question_path(question) 
+    visit question_path(question)  
 
-    expect(page).to_not have_content 'Edit answer'
+    within ".answer-#{answer.id}" do
+      expect(page).to_not have_link('Edit answer')      
+    end
   end 
 end

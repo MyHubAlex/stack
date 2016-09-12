@@ -1,9 +1,7 @@
-h2= @question.title
-p= @question.body
-
-- if !current_user.nil? && current_user.belongs_to_obj(@question)
-    li= link_to 'Delete question', @question, method: :delete
-    li= link_to 'Edit question', edit_question_path(@question)
+.question_errors
+  
+.question
+  = render 'question'
 
 = form_for [@question, @answer], remote: true do |f|
   = f.label :content, "Write your answer: "
