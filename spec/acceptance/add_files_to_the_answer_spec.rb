@@ -14,12 +14,12 @@ feature 'add files to answer', %q{
     visit question_path(question)
   end
 
-  scenario 'User adds files when ask the answer' do
+  scenario 'User adds files when ask the answer', js: true do
     fill_in 'Write your answer', with: 'bla bla bla !!!!!!!!!!!!'
     attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
     click_on 'Post'   
 
-    within 'answers' do
+    within '.answers' do
       expect(page).to have_content('spec_helper.rb')
     end
   end

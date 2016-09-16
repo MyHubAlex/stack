@@ -37,7 +37,7 @@ gem 'rails-controller-testing'
 gem 'launchy'
 gem 'require_relative'
 gem 'carrierwave'
-gem 'remotipart', github: 'mshibuya/remotipart', ref: '88d9a7d'
+gem 'remotipart'
 gem "cocoon"
 
 group :development, :test do

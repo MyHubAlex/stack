@@ -1,10 +1,3 @@
-GIT
-  remote: git://github.com/mshibuya/remotipart.git
-  revision: 88d9a7d55bde66acb6cf3a3c6036a5a1fc991d5e
-  ref: 88d9a7d
-  specs:
-    remotipart (1.2.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -162,6 +155,7 @@ GEM
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
+    remotipart (1.3.0)
     require_relative (1.0.3)
     responders (2.3.0)
       railties (>= 4.2.0, < 5.1)
@@ -259,7 +253,7 @@ DEPENDENCIES
   puma (~> 3.0)
   rails (~> 5.0.0)
   rails-controller-testing
-  remotipart!
+  remotipart
   require_relative
   rspec
   rspec-rails
