@@ -27,5 +27,21 @@ feature 'delete files from question', %q{
     within ".file-id-#{file.id}" do
       expect(page).to_not have_content "Delete file"
     end  
+  end
+
+  scenario 'User delete a file when ask question', js: true  do
+    sign_in(user)
+    visit question_path(question)
+
+    within ".form_answer" do      
+      click_on 'add file'
+      click_on 'add file'
+      expect(all(:css,'.nested-fields').size).to eq 3
+      within (all(:css,'.nested-fields').last) do
+        click_on 'remove file'  
+      end
+      sleep 1
+      expect(page.all(:css,'.nested-fields').size).to eq 2
+    end    
   end 
 end

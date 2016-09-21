@@ -14,7 +14,7 @@ feature 'add files to answer', %q{
     visit question_path(question)
   end
 
-  scenario 'User adds files when ask the answer', js: true do
+  scenario 'User adds files when answer', js: true do
     fill_in 'Write your answer', with: 'bla bla bla !!!!!!!!!!!!'
     attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
     click_on 'Post'   
@@ -23,5 +23,33 @@ feature 'add files to answer', %q{
       expect(page).to have_content('spec_helper.rb')
     end
   end
+
+   scenario 'User adds some files when answer' , js: true do
+    fill_in 'Write your answer', with: 'bla bla bla !!!!!!!!!!!!'
     
+    click_on 'add file'
+
+    within(all(:css, '.nested-fields').first) do  
+      attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
+    end
+
+    within(all(:css,'.nested-fields').last) do
+      attach_file 'File', "#{Rails.root}/spec/rails_helper.rb"
+    end
+
+    click_on 'Post'   
+
+    expect(page).to have_link 'spec_helper.rb'
+    expect(page).to have_link 'rails_helper.rb'
+  end
+
+  scenario 'User adds file when edit answer'
+    sign_in(user)
+    visit question_path(question)
+
+    within ".answer-#{answer.id}" do
+      click_on 'Edit answer'
+      attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
+    end  
+  end
 end

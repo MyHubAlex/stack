@@ -12,9 +12,14 @@
         li= link_to 'Edit answer', '', remote: true, class: 'edit-answer-link', data: { answer_id: answer.id } 
         .edit-answer-form
          = form_for answer, remote: true, html: {id: "edit-answer-#{answer.id}"} do |f|
-           = f.label :content, 'Answer'
-           = f.text_area :content 
-           = f.submit 'Save answer'  
+          = f.label :content, 'Answer'
+          = f.text_area :content
+          p Attachments:
+          p
+          = f.fields_for  :attachments do |a|
+          .links
+            = link_to_add_association 'add file', f, :attachments 
+          = f.submit 'Save answer'  
         
         li= link_to 'Delete answer', answer, remote: true, method: :delete
     - if current_user && user_signed_in?  
