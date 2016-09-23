@@ -10,6 +10,7 @@ feature 'delete files from question', %q{
   given!(:user_alien) { create(:user) }
   given!(:question) { create(:question, user: user) }
   given!(:file) { create(:attachment, attachable: question) }
+  given!(:file2) { create(:attachment, attachable: question) }
 
   scenario 'User delete own file', js: true  do
 
@@ -17,7 +18,7 @@ feature 'delete files from question', %q{
     visit question_path(question)
     within ".file-id-#{file.id}" do
       click_on 'Delete file' 
-      expect(page).to_not have_link 'spec_helper.rb', href: '/uploads/attachment/file/#{file.id}/'
+      expect(page).to_not have_link 'spec_helper.rb', href: "/uploads/attachment/file/#{file.id}/"
     end  
   end
    
@@ -40,8 +41,17 @@ feature 'delete files from question', %q{
       within (all(:css,'.nested-fields').last) do
         click_on 'remove file'  
       end
-      sleep 1
-      expect(page.all(:css,'.nested-fields').size).to eq 2
+      expect(page).to have_css(".nested-fields", count: 2)
     end    
+  end
+
+  scenario 'User delete the file from some files', js: true do
+    sign_in(user)
+    visit question_path(question)
+
+    within ".file-id-#{file2.id}" do
+      click_on 'Delete file'
+    end      
+    expect(page).to_not have_selector(".file-id-#{file2.id}")
   end 
 end

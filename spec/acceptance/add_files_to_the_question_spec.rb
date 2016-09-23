@@ -41,5 +41,17 @@ feature 'add files to question', %q{
     expect(page).to have_link 'rails_helper.rb'
   end
 
+  scenario 'User adds file when edit question', js: true do
+    question = create(:question, user: user) 
+    visit question_path(question)
+
+    within ".question" do
+      click_on 'Edit question'
+      click_on 'add file'
+      attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
+      click_on 'Save'
+      expect(page).to have_content 'spec_helper.rb'
+    end  
+  end
    
 end

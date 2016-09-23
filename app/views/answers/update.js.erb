@@ -1,9 +1,5 @@
-alert('ok')
-<% if @answer.errors.present? %>
-  <% @answer.errors.full_messages.each do |e| %>
-    $('.answer_errors').html('<%= j e %>');
-  <% end %>
-<% else %> 
-  alert('ok')
+<% if remotipart_submitted? %>
+  $('.answer-<%= @answer.id %>').replaceWith("<%= j "#{render(@answer)}" %>");
+<% else %>
   $('.answer-<%= @answer.id %>').replaceWith("<%= j render @answer %>"); 
-<% end %>  
+<% end %>

@@ -23,7 +23,7 @@ class AnswersController < ApplicationController
     @question = @answer.question
     if current_user.belongs_to_obj(@answer) && @answer.update(answer_params) 
       flash[:notice] = 'Your answer was changed'
-    end
+    end      
   end
 
   def best

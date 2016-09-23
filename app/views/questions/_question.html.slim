@@ -18,4 +18,10 @@ p= @question.body
         = f.text_field :title
         = f.label :body
         = f.text_area :body
-        = f.submit 'Save'   
+          
+        p Attachment
+        p
+          = f.fields_for  :attachments do |a|
+          .links
+            = link_to_add_association 'add file', f, :attachments 
+        = f.submit 'Save'
