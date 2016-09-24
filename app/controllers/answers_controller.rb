@@ -6,7 +6,7 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user= current_user
-    @answer.save        
+    @answer.save       
   end
 
   def destroy
@@ -23,7 +23,7 @@ class AnswersController < ApplicationController
     @question = @answer.question
     if current_user.belongs_to_obj(@answer) && @answer.update(answer_params) 
       flash[:notice] = 'Your answer was changed'
-    end
+    end      
   end
 
   def best
@@ -40,6 +40,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params    
-    params.require(:answer).permit(:content)
+    params.require(:answer).permit(:content, attachments_attributes: [:file, :attachment_id, :_destroy])
   end
 end

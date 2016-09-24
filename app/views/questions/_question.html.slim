@@ -1,5 +1,13 @@
 h2= @question.title
 p= @question.body
+.attachment-files
+  p Attachment:
+  ul
+    -@question.attachments.each do |a|
+      div class = "file-id-#{a.id}"
+        li = link_to a.file.identifier, a.file.url
+        - if current_user && current_user.belongs_to_obj(@question)
+            p= link_to 'Delete file', a, remote: true, method: :delete
 
 - if current_user && current_user.belongs_to_obj(@question)
     li= link_to 'Delete question', @question, method: :delete
@@ -10,4 +18,10 @@ p= @question.body
         = f.text_field :title
         = f.label :body
         = f.text_area :body
-        = f.submit 'Save'   
+          
+        p Attachment
+        p
+          = f.fields_for  :attachments do |a|
+          .links
+            = link_to_add_association 'add file', f, :attachments 
+        = f.submit 'Save'
