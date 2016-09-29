@@ -2,6 +2,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :get_question, only: [:new, :create]
   before_action :load_answer, except: [:create]
+  include Voted
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -30,6 +31,7 @@ class AnswersController < ApplicationController
     @answer.is_best    
   end
 
+  
   private
 
   def load_answer

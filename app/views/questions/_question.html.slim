@@ -1,5 +1,6 @@
 h2= @question.title
 p= @question.body
+p class = "question_rating-#{@question.id}" = "rating: #{@question.votes.total_vote}"
 .attachment-files
   p Attachment:
   ul
@@ -8,7 +9,11 @@ p= @question.body
         li = link_to a.file.identifier, a.file.url
         - if current_user && current_user.belongs_to_obj(@question)
             p= link_to 'Delete file', a, remote: true, method: :delete
-
+- if current_user && !current_user.belongs_to_obj(@question)
+    li class = "question_vote_up" = link_to 'Vote up', vote_up_question_path(@question), remote: true, data: { type: :json}, method: :post 
+    li class = "question_vote_down"= link_to 'Vote down', vote_down_question_path(@question), remote: true, data: { type: :json}, method: :post
+    li class = "question_vote_cancel" = link_to 'Vote cancel', vote_cancel_question_path(@question), remote: true, data: { type: :json}, method: :post   
+            
 - if current_user && current_user.belongs_to_obj(@question)
     li= link_to 'Delete question', @question, method: :delete
     li= link_to 'Edit question', '', class: 'edit-question-link', data: { question_id: @question.id }
