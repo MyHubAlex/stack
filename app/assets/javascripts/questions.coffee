@@ -7,4 +7,15 @@ ready = ->
     $(this).hide()
     $('.edit-question-form').show()
 
+  $('.question_vote_up').bind 'ajax:success', (e, data, status, xhr) ->
+    vote = $.parseJSON(xhr.responseText);
+    $('.question_rating-'+ vote.votable.id).html("rating: "+ vote.total);  
+
+  $('.question_vote_down').bind 'ajax:success', (e, data, status, xhr) ->
+    vote = $.parseJSON(xhr.responseText);
+    $('.question_rating-'+ vote.votable.id).html("rating: "+ vote.total);    
+
+  $('.question_vote_cancel').bind 'ajax:success', (e, data, status, xhr) ->
+    vote = $.parseJSON(xhr.responseText);
+    $('.question_rating-'+ vote.votable.id).html("rating: "+ vote.total);  
 $(document).on("turbolinks:load", ready)   

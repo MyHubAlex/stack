@@ -7,4 +7,16 @@ ready = ->
     id_answer = $(this).data('answerId')
     $('#edit-answer-'+ id_answer).show()
 
+  $('.vote_up').bind 'ajax:success', (e, data, status, xhr) ->
+    vote = $.parseJSON(xhr.responseText);
+    $('.rating-'+ vote.votable.id).html("rating: "+ vote.total);  
+
+  $('.vote_down').bind 'ajax:success', (e, data, status, xhr) ->
+    vote = $.parseJSON(xhr.responseText);
+    $('.rating-'+ vote.votable.id).html("rating: "+ vote.total);    
+
+  $('.vote_cancel').bind 'ajax:success', (e, data, status, xhr) ->
+    vote = $.parseJSON(xhr.responseText);
+    $('.rating-'+ vote.votable.id).html("rating: "+ vote.total);      
+
 $(document).on("turbolinks:load", ready)   
