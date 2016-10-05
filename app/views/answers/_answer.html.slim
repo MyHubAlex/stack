@@ -28,8 +28,12 @@
     - if current_user && !current_user.belongs_to_obj(answer)
         li class = "vote_up" = link_to 'Vote up', vote_up_answer_path(answer), remote: true, data: { type: :json}, method: :post 
         li class = "vote_down"= link_to 'Vote down', vote_down_answer_path(answer), remote: true, data: { type: :json}, method: :post
-        li class = "vote_cancel" = link_to 'Vote cancel', vote_cancel_answer_path(answer), remote: true, data: { type: :json}, method: :post              
-               
+        li class = "vote_cancel" = link_to 'Vote cancel', vote_cancel_answer_path(answer), remote: true, data: { type: :json}, method: :post
+
+    = render partial: 'comments/form_comment', locals: { commentable: answer, comment: answer.comments.build }
+    div class = "answer-comments-#{answer.id}"
+      = render answer.comments
+             
         
 
       

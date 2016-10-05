@@ -7,10 +7,13 @@ Rails.application.routes.draw do
     post :vote_cancel, on: :member    
   end
 
-  resources :questions, concerns: :votable do
-    resources :answers, shallow: true, concerns: :votable do
+  resources :questions, concerns: [:votable] do
+    resources :comments, shallow: true, only: [:create, :update, :destroy], defaults: { commentable_type: 'question' }
+    resources :answers, shallow: true, concerns: [:votable] do
+      resources :comments, shallow: true, only: [:create, :update, :destroy], defaults: { commentable_type: 'answer' }
       patch :best, on: :member
     end
+    
   end
 
   resources :attachments, only: :destroy

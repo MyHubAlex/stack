@@ -1,7 +1,7 @@
-ul
+ul class = "questions"
   - @questions.each do |q|
-    h3= link_to q.title, q
-
-  
+    h3= link_to q.title, q  
 
 p= link_to 'Ask question', new_question_path
+
+= subscribe_to "/questions"

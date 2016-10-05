@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160924162929) do
+ActiveRecord::Schema.define(version: 20161001111526) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,16 @@ ActiveRecord::Schema.define(version: 20160924162929) do
     t.datetime "updated_at",      null: false
     t.index ["attachable_id"], name: "index_attachments_on_attachable_id", using: :btree
     t.index ["attachable_type"], name: "index_attachments_on_attachable_type", using: :btree
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "commentable_id"
+    t.string  "commentable_type"
+    t.text    "body"
+    t.index ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
+    t.index ["commentable_id"], name: "index_comments_on_commentable_id", using: :btree
+    t.index ["user_id"], name: "index_comments_on_user_id", using: :btree
   end
 
   create_table "questions", force: :cascade do |t|
@@ -76,6 +86,7 @@ ActiveRecord::Schema.define(version: 20160924162929) do
 
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users", on_delete: :nullify
+  add_foreign_key "comments", "users"
   add_foreign_key "questions", "users", on_delete: :nullify
   add_foreign_key "votes", "users"
 end
