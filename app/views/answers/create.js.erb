@@ -1,3 +1,8 @@
-$('.answers').append('<%= j render @answer %>')
+
+<% publish_to "/question/#{@question.id}" do %>
+	$('.answers').append('<%= j render partial: "answer_new", locals: { answer: @answer } %>')
+<% end %>
+
 $('#answer_content').val('')
 $('input[type="file"]').val('')
+

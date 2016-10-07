@@ -9,7 +9,8 @@ class QuestionsController < ApplicationController
 
   def show    
     @answer = @question.answers.new
-    @answer.attachments.build
+    @answer.attachments.build    
+    
   end
 
   def new
@@ -22,6 +23,7 @@ class QuestionsController < ApplicationController
     
     if @question.save
       flash[:notice] = 'Your question successfully created.' 
+      PrivatePub.publish_to "/questions", question: @question.to_json
       redirect_to @question
     else
       render :new

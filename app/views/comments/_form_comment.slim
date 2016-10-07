@@ -1,0 +1,6 @@
+- if user_signed_in?
+	= form_for [commentable, comment], class: "new_comment", remote: true do |f|
+	  = f.label :body, "Write your comment: "
+	  = f.text_field :body
+	        
+	  = f.submit 'Post'

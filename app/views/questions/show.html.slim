@@ -2,8 +2,14 @@
   
 .question
   = render 'question'
+  .question-comments
+  	= render partial: 'comments/form_comment', locals: { commentable: @question, comment: @question.comments.build }
+  	= render @question.comments
 .form_answer
   = render 'form_answer'
 
-.answers
+.answers data = { question_id: "#{@question.id}" }
   = render @question.answers
+  
+= subscribe_to "/question/#{@question.id}" 
+= subscribe_to "/questions/#{@question.id}/comments"      

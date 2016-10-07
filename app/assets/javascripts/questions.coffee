@@ -18,4 +18,12 @@ ready = ->
   $('.question_vote_cancel').bind 'ajax:success', (e, data, status, xhr) ->
     vote = $.parseJSON(xhr.responseText);
     $('.question_rating-'+ vote.votable.id).html("rating: "+ vote.total);  
+
+  PrivatePub.subscribe "/questions", (data, channel) ->
+    console.log(data);
+    question = $.parseJSON(data['question']);
+    $('.questions').append('<h3> <a href= "/questions/'+question.id+'">'+question.title+'</a></h3>');  
+
 $(document).on("turbolinks:load", ready)   
+
+
