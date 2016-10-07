@@ -34,7 +34,8 @@ feature 'delete files from question', %q{
     sign_in(user)
     visit question_path(question)
 
-    within ".form_answer" do      
+    within ".form_answer" do 
+      click_on 'add file'     
       click_on 'add file'
       click_on 'add file'
       expect(all(:css,'.nested-fields').size).to eq 3

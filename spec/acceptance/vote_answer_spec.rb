@@ -30,14 +30,6 @@ feature 'User votes for an answer ', %q{
           end
         end
 
-        scenario 'negative vote', js: true do
-          within ".answer-#{answer.id}" do
-            click_on 'Vote down'
-          
-            expect(page).to have_content "rating: -1"          
-          end
-        end
-
         scenario 'vote 2 times', js: true do
           within ".answer-#{answer.id}" do
             click_on 'Vote up'
@@ -48,6 +40,14 @@ feature 'User votes for an answer ', %q{
           end  
         end
 
+        scenario 'negative vote', js: true do
+          within ".answer-#{answer.id}" do
+            click_on 'Vote down'
+          
+            expect(page).to have_content "rating: -1"          
+          end
+        end
+        
         scenario 'cancel vote', js: true do
           within ".answer-#{answer.id}" do
             click_on 'Vote up'

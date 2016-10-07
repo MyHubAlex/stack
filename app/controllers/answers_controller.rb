@@ -4,26 +4,22 @@ class AnswersController < ApplicationController
   before_action :load_answer, except: [:create]
   include Voted
 
+  respond_to :js
+
   def create
-    @answer = @question.answers.new(answer_params)
-    @answer.user = current_user
-    @answer.save
+    respond_with(@answer = @question.answers.create(answer_params))
   end
 
   def destroy
     if current_user.belongs_to_obj(@answer)
-      @answer.destroy      
+      respond_with(@answer.destroy)      
     end    
   end
 
-  def edit
-    @question = @answer.question
-  end
-
   def update
-    @question = @answer.question
-    if current_user.belongs_to_obj(@answer) && @answer.update(answer_params) 
-      flash[:notice] = 'Your answer was changed'
+    if current_user.belongs_to_obj(@answer)
+      @answer.update(answer_params) 
+      respond_with(@answer)
     end      
   end
 
@@ -42,6 +38,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params    
-    params.require(:answer).permit(:content, attachments_attributes: [:file, :attachment_id, :_destroy])
+    params.require(:answer).permit(:content, attachments_attributes: [:file, :attachment_id, :_destroy]).merge(user: current_user)
   end
 end

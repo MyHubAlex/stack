@@ -16,6 +16,7 @@ feature 'add files to question', %q{
   scenario 'User adds files when ask the question', js: true do
     fill_in 'Title', with: 'Test question * Test question'
     fill_in 'Body', with: 'bla bla bla'
+    click_on 'add file'
     attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
     click_on 'Create'   
 
@@ -31,6 +32,8 @@ feature 'add files to question', %q{
       attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
     end
 
+    click_on 'add file'
+    
     within(all(:css,'.nested-fields').last) do
       attach_file 'File', "#{Rails.root}/spec/rails_helper.rb"
     end
