@@ -37,6 +37,7 @@ feature 'delete files from answer', %q{
     within ".form_answer" do      
       click_on 'add file'
       click_on 'add file'
+      click_on 'add file'
       expect(all(:css,'.nested-fields').size).to eq 3
       within (all(:css,'.nested-fields').last) do
         click_on 'remove file'  

@@ -285,6 +285,7 @@ DEPENDENCIES
   rails-controller-testing
   remotipart
   require_relative
+  responders
   rspec
   rspec-rails
   sass-rails (~> 5.0)

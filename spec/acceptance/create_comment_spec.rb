@@ -21,7 +21,7 @@ feature 'add comment to answer and question', %q{
         
         within '.question-comments' do
           fill_in 'Write your comment:', with: 'bla bla bla'
-          click_on 'Post'
+          click_on 'Post comment'
           expect(page).to have_content 'bla bla bla'        
         end
       end 
@@ -30,7 +30,7 @@ feature 'add comment to answer and question', %q{
         
         within ".answer-#{answer.id}" do
           fill_in 'Write your comment:', with: 'Again bla bla bla'
-          click_on 'Post'
+          click_on 'Post comment'
           expect(page).to have_content 'Again bla bla bla'        
         end
       end  

@@ -2,21 +2,24 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :get_commentable, only: [:create]
   before_action :get_comment, except: [:create]
+  after_action :publish_comment, only: [:create]
+
+  respond_to :js
   
   def create
-    @comment = @commentable.comments.new(comment_params)
-    @comment.user = current_user
-    @comment.save
-    if @comment.commentable_type == "Question"
-      @id_commentable = @commentable.id
-      else
-      @id_commentable = @commentable.question.id
-    end
-    PrivatePub.publish_to "/questions/#{@id_commentable}/comments", comment: @comment.to_json
-    render nothing: true
+    respond_with(@comment = @commentable.comments.create(comment_params))    
   end
 
   private
+
+  def publish_comment
+    if @comment.commentable.is_a? Question
+      id_commentable = @commentable.id
+    else
+      id_commentable = @commentable.question.id
+    end
+    PrivatePub.publish_to "/questions/#{id_commentable}/comments", comment: @comment.to_json
+  end
 
   def get_answer
     @comment = Comment.find(params[:id])
@@ -31,7 +34,7 @@ class CommentsController < ApplicationController
   end
 
   def comment_params    
-    params.require(:comment).permit(:body)
+    params.require(:comment).permit(:body).merge(user: current_user)
   end
 
 end
