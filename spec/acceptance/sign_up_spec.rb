@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'acceptance_helper'
 
 feature 'User sign up', %q{
   In order to be able to ask question and to answer to question
@@ -10,8 +10,10 @@ feature 'User sign up', %q{
 
     scenario 'sign up with valid attribute' do
       sign_up(user)
-      expect(page).to have_content "Welcome! You have signed up successfully."
-      expect(current_path).to eq root_path  
+      #expect(page).to have_content "Welcome! You have signed up successfully."
+      open_email('alex@test.ru')
+      current_email.click_link 'Confirm my account'
+      expect(page).to have_content 'Your email address has been successfully confirmed.'
     end
 
     scenario 'sign up with invalid attribute' do
