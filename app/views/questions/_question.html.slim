@@ -9,10 +9,11 @@ p class = "question_rating-#{@question.id}" = "rating: #{@question.votes.total_v
         li = link_to a.file.identifier, a.file.url
         - if current_user && current_user.belongs_to_obj(@question)
             p= link_to 'Delete file', a, remote: true, method: :delete
-- if current_user && !current_user.belongs_to_obj(@question)
-    li class = "question_vote_up" = link_to 'Vote up', vote_up_question_path(@question), remote: true, data: { type: :json}, method: :post 
-    li class = "question_vote_down"= link_to 'Vote down', vote_down_question_path(@question), remote: true, data: { type: :json}, method: :post
-    li class = "question_vote_cancel" = link_to 'Vote cancel', vote_cancel_question_path(@question), remote: true, data: { type: :json}, method: :post   
+/- if current_user && !current_user.belongs_to_obj(@question)
+
+li class = "question_vote_up" = link_to 'Vote up', vote_up_question_path(@question), remote: true, data: { type: :json}, method: :post 
+li class = "question_vote_down"= link_to 'Vote down', vote_down_question_path(@question), remote: true, data: { type: :json}, method: :post
+li class = "question_vote_cancel" = link_to 'Vote cancel', vote_cancel_question_path(@question), remote: true, data: { type: :json}, method: :post   
             
 - if current_user && current_user.belongs_to_obj(@question)
     li= link_to 'Delete question', @question, method: :delete

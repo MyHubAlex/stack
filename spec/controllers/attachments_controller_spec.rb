@@ -28,10 +28,6 @@ RSpec.describe AttachmentsController, type: :controller do
         expect { delete :destroy, params: { id: attachment, format: :js} }.to_not change(foreign_question.attachments, :count)
       end
 
-      it 'render to destroy template' do
-        delete :destroy, params: { id: attachment, format: :js }
-        expect(request).to render_template :destroy
-      end
     end
   end
 end
