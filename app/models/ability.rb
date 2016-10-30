@@ -25,7 +25,7 @@ class Ability
     can :create, [Question, Answer, Comment]
     can :update, [Question, Answer], user: user
     can :destroy, [Question, Answer], user: user
-    can [:vote_up, :vote_down, :vote_cancel], [Question, Answer] { |votable| votable.user != user}
+    can [:vote_up, :vote_down, :vote_cancel], [Question, Answer] { |votable| !user.belongs_to_obj(votable) }
     can :best, [Answer] { |answer| answer.user != user }
     can :destroy, [Attachment], attachable: { user: user }
   end

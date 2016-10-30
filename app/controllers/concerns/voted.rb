@@ -2,11 +2,11 @@ module Voted
   extend ActiveSupport::Concern
 
   included do
-    authorize_resource
     before_action :set_votable, only: [:vote_up, :vote_down, :vote_cancel]
   end
 
   def vote_up
+      authorize! :vote_up, @votable
     #if current_user != @votable.user
       @vote = @votable.votes.build(user: current_user, point: 1)
       if @vote.save
@@ -18,6 +18,7 @@ module Voted
   end 
 
   def vote_down
+      authorize! :vote_down, @votable
     #if current_user != @votable.user
       @vote = @votable.votes.build(user: current_user, point: -1)
       if @vote.save
@@ -29,6 +30,7 @@ module Voted
   end
 
   def vote_cancel
+      authorize! :vote_cancel, @votable
     #if current_user != @votable.user
       @votable.delete_vote(current_user)
       render json: {votable: @votable, total: @votable.votes.total_vote }
