@@ -6,7 +6,7 @@ RSpec.describe AnswersController, type: :controller do
   
   let(:question) { create(:question, user: @user) }  
   let!(:answer) { create(:answer, question: question, user: @user) }
-  
+  let!(:foreign_answer) { create(:answer, question: question, user: create(:user)) }  
   describe 'POST #create' do
  
     context 'with valid attributes' do
@@ -102,10 +102,6 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.content).to eq foreign_answer.content
       end 
 
-      it 'renders to update template' do
-        patch :update, params: { id: foreign_answer, answer: attributes_for(:answer), question_id: question, format: :js }
-        expect(response).to render_template :update
-      end
     end
 
     context 'invalid attributes' do
@@ -124,14 +120,14 @@ RSpec.describe AnswersController, type: :controller do
   describe 'PATCH #best' do
     context 'select the best to own answer' do
       let!(:best_answer) { create(:answer, question: question, user: @user, best: true )}
-      before { patch :best, params: { id: answer, answer: attributes_for(:answer), question_id: question, best: true }, format: :js }
-      before { answer.reload}
+      before { patch :best, params: { id: foreign_answer, answer: attributes_for(:answer), question_id: question, best: true }, format: :js }
+      before { foreign_answer.reload}
       it 'assigns the best answer to @answer' do                
-        expect(assigns(:answer)).to eq answer
+        expect(assigns(:answer)).to eq foreign_answer
       end
 
       it 'set to answer sign best' do                
-        expect(answer.best).to eq true
+        expect(foreign_answer.best).to eq true
       end
       it 'another best anwser should be false' do
         best_answer.reload

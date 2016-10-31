@@ -6,32 +6,35 @@ module Voted
   end
 
   def vote_up
-    if current_user != @votable.user
+      authorize! :vote_up, @votable
+    #if current_user != @votable.user
       @vote = @votable.votes.build(user: current_user, point: 1)
       if @vote.save
         render json: {votable: @votable, total: @votable.votes.total_vote }  
       else
         render json: @votable.errors.full_messages, status: :unprocessable_entity
       end
-    end
+    #end
   end 
 
   def vote_down
-    if current_user != @votable.user
+      authorize! :vote_down, @votable
+    #if current_user != @votable.user
       @vote = @votable.votes.build(user: current_user, point: -1)
       if @vote.save
         render json: {votable: @votable, total: @votable.votes.total_vote } 
       else
         render json: @votable.errors.full_messages, status: :unprocessable_entity
       end
-    end
+    #end
   end
 
   def vote_cancel
-    if current_user != @votable.user
+      authorize! :vote_cancel, @votable
+    #if current_user != @votable.user
       @votable.delete_vote(current_user)
       render json: {votable: @votable, total: @votable.votes.total_vote }
-    end
+    #end
   end
 
   private

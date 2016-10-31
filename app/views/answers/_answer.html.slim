@@ -9,7 +9,9 @@
           - if current_user && current_user.belongs_to_obj(answer)
               p= link_to 'Delete file', a, remote: true, method: :delete
           
-    - if current_user && current_user.belongs_to_obj(answer) 
+    /- if current_user && current_user.belongs_to_obj(answer)
+
+    - if can?(:update, answer)
         li= link_to 'Edit answer', '', remote: true,class: 'edit-answer-link', data: { answer_id: answer.id } 
         .edit-answer-form
          = form_for answer, remote: true, html: {id: "edit-answer-#{answer.id}"} do |f|
@@ -25,10 +27,11 @@
         li= link_to 'Delete answer', answer, remote: true, method: :delete
     - if current_user && user_signed_in?  
         li= link_to 'The best answer',best_answer_path(answer), remote: true, method: :patch, data: { answer_id: answer.id }  
-    - if current_user && !current_user.belongs_to_obj(answer)
-        li class = "vote_up" = link_to 'Vote up', vote_up_answer_path(answer), remote: true, data: { type: :json}, method: :post 
-        li class = "vote_down"= link_to 'Vote down', vote_down_answer_path(answer), remote: true, data: { type: :json}, method: :post
-        li class = "vote_cancel" = link_to 'Vote cancel', vote_cancel_answer_path(answer), remote: true, data: { type: :json}, method: :post
+    /- if current_user && !current_user.belongs_to_obj(answer)
+
+    li class = "vote_up" = link_to 'Vote up', vote_up_answer_path(answer), remote: true, data: { type: :json}, method: :post 
+    li class = "vote_down"= link_to 'Vote down', vote_down_answer_path(answer), remote: true, data: { type: :json}, method: :post
+    li class = "vote_cancel" = link_to 'Vote cancel', vote_cancel_answer_path(answer), remote: true, data: { type: :json}, method: :post
 
     = render partial: 'comments/form_comment', locals: { commentable: answer, comment: answer.comments.build }
     div class = "answer-comments-#{answer.id}"

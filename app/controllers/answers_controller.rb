@@ -6,6 +6,8 @@ class AnswersController < ApplicationController
 
   respond_to :js
 
+  authorize_resource
+
   def create
     respond_with(@answer = @question.answers.create(answer_params))
   end
@@ -17,10 +19,10 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if current_user.belongs_to_obj(@answer)
-      @answer.update(answer_params) 
-      respond_with(@answer)
-    end      
+    #if current_user.belongs_to_obj(@answer)
+    @answer.update(answer_params) 
+    respond_with(@answer)
+    #end      
   end
 
   def best
