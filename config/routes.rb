@@ -1,7 +1,16 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   devise_for :users, skip: [:registrations], controllers: { omniauth_callbacks: 'omniauth_callbacks' }
   default_url_options :host => "127.0.0.1:3000"
 
+  namespace :api do
+    namespace :v1 do
+      resources :profiles do
+        get :me, on: :collection
+        get :users, on: :collection
+      end
+    end
+  end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   devise_scope :user do
     post '/users/confirm_email' => 'users#confirm_email', as: :confirm_email  
