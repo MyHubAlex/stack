@@ -1,5 +1,5 @@
 require 'rails_helper'
-require Rails.root.join "spec/shared_examples/voted_controller_spec.rb"
+require Rails.root.join "spec/support/shared_examples/voted_controller_spec.rb"
 
 RSpec.describe QuestionsController, type: :controller do
   describe 'GET #index' do
@@ -69,6 +69,13 @@ RSpec.describe QuestionsController, type: :controller do
       it 're-renders new view' do
         post :create, params: { question: attributes_for(:invalid_question) }
         expect(response).to render_template :new 
+      end
+    end
+
+    context 'PrivatePub' do
+      it 'publishes new question' do
+        expect(PrivatePub).to receive(:publish_to).with('/questions', anything)
+        post :create, question: attributes_for(:question)
       end
     end
   end
