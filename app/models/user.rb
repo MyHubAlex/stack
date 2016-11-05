@@ -8,7 +8,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :confirmable, :trackable, :validatable, :omniauthable, omniauth_providers: [:facebook, :twitter]   
 
-  scope :all_user_without_current, ->(id) { where("id != ?", id) }       
+  scope :all_user_without_current, ->(id) { where.not(id: id) }       
   def belongs_to_obj(object) 
    object.user_id == id 
   end  
