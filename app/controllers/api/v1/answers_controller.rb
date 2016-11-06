@@ -1,5 +1,5 @@
 class Api::V1::AnswersController < Api::V1::BaseController
- 
+  authorize_resource 
   before_action :load_question, except: :show
   
 
