@@ -11,7 +11,7 @@ class Answer < ApplicationRecord
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
 
-  after_create :send_letter_to_subscribes
+  after_commit :send_letter_to_subscribes
   
   def is_best
     Answer.transaction do
