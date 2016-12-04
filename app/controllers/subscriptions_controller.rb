@@ -4,11 +4,11 @@ class SubscriptionsController < ApplicationController
   respond_to :js  
   authorize_resource 
   def create
-    current_user.subscribe(@question)     
+    @question.subscribe(current_user)     
   end
 
   def destroy
-    current_user.unsubscribe(Subscription.find(params[:id]))    
+    Subscription.find(params[:id]).destroy
   end 
 
   private 

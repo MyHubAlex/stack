@@ -4,7 +4,7 @@ class User < ApplicationRecord
   has_many :questions
   has_many :answers
   has_many :authorizations
-  has_many :subscriptions
+  has_many :subscriptions, dependent: :destroy
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :confirmable, :trackable, :validatable, :omniauthable, omniauth_providers: [:facebook, :twitter]   
@@ -50,15 +50,5 @@ class User < ApplicationRecord
     end
   end
 
-  def is_subscribe?(question)
-    self.subscriptions.where(question: question).first
-  end
-
-  def subscribe(question)
-    self.subscriptions.create(question: question)
-  end
-
-  def unsubscribe(subscription)
-    self.subscriptions.where(id: subscription.id).delete_all
-  end
+  
 end
