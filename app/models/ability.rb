@@ -29,5 +29,6 @@ class Ability
     can :best, [Answer] { |answer| answer.user != user }
     can :destroy, [Attachment], attachable: { user: user }
     can [:index, :me], User
+    can [:create, :destroy], Subscription
   end
 end

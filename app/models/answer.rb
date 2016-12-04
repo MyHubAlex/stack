@@ -11,10 +11,16 @@ class Answer < ApplicationRecord
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
 
+  after_create :send_letter_to_subscribes
+  
   def is_best
     Answer.transaction do
       self.question.answers.where(best: true).update_all(best: false)
       self.update!(best: true)
     end
+  end
+
+  def send_letter_to_subscribes
+    AnswerRespondJob.perform_later(self)
   end
 end
