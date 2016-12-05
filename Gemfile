@@ -50,6 +50,10 @@ gem 'doorkeeper'
 gem 'active_model_serializers'
 gem 'oj'
 gem 'oj_mimic_json'
+gem 'whenever'
+gem 'sidekiq'
+gem 'sinatra', require: nil
+gem 'sidetiq'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -75,6 +79,7 @@ group :test, :development do
   gem 'capybara-webkit'
   gem 'letter_opener'
   gem 'capybara-email'
+  gem 'better_errors' 
 end
 
 group :test do

@@ -1,3 +1,10 @@
+.subscription
+  - if user_signed_in?
+    - if !@question.is_subscribe?(current_user)
+       = link_to "Subscribe",question_subscriptions_path(@question), method: :post, remote: true, class: "Subscribe-link" 
+    - else
+       = link_to "Unsubscribe",@question.subscriptions.first, method: :delete, remote: true, class: "Unsubscribe-link"
+      
 h2= @question.title
 p= @question.body
 p class = "question_rating-#{@question.id}" = "rating: #{@question.votes.total_vote}"

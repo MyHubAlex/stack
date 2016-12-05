@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_many :questions
   has_many :answers
   has_many :authorizations
+  has_many :subscriptions, dependent: :destroy
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :confirmable, :trackable, :validatable, :omniauthable, omniauth_providers: [:facebook, :twitter]   
@@ -42,4 +43,12 @@ class User < ApplicationRecord
     user.password = Devise.friendly_token[0, 20]
     user
   end   
+
+  def self.send_daily_digest
+    find_each.each do |user|
+      DailyMailer.digest(user).deliver_later
+    end
+  end
+
+  
 end
