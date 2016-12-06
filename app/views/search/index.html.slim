@@ -1,0 +1,11 @@
+.result
+	-if @result.present?
+		-@result.each do |item|
+			-if item.class == Question
+				=link_to item.title, item
+			-if item.class == Answer	
+			  =link_to item.content, item.question
+			-if item.class == Comment	
+			  =link_to item.body, item   
+			-if item.class == User
+			  =link_to item.email, item     

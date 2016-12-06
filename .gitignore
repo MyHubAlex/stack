@@ -24,3 +24,5 @@
 .byebug_history
 
 config/database.yml
+config/*.sphinx.conf
+db/sphinx

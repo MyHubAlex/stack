@@ -40,6 +40,6 @@ Rails.application.routes.draw do
   end
 
   resources :attachments, only: :destroy
-  
+  get 'search', to: 'search#index'  
   root to: "questions#index"
 end
