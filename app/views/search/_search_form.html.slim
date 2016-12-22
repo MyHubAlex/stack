@@ -1,0 +1,6 @@
+.form_search
+	= form_tag("/search", method: "get")
+		= label_tag(:q, "Search for:")
+		= text_field_tag(:q)
+		= select_tag(:a, options_for_select(Search::AREAS_FOR_SELECT))
+		= submit_tag("Search")

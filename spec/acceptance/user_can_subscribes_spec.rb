@@ -1,14 +1,15 @@
 require_relative 'acceptance_helper'
 
+
 feature 'user can subscribes to question', %q{
   In order to keep in touch what happend with question,
   As an user,
   I want to be able to give mail
 } do
 
-  given(:user) { create(:user) }
-  given(:another_user) { create(:user) }
-  given(:question) { create(:question, user: user) }
+  let(:user) { create(:user) }
+  let(:another_user) { create(:user) }
+  let(:question) { create(:question, user: user) }
       
   describe 'Author of question' do
     before do 
