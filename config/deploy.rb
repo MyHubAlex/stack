@@ -22,7 +22,7 @@ set :deploy_user, 'deployer'
 # set :pty, true
 
 # Default value for :linked_files is []
-append :linked_files, "config/database.yml", "config/private_pub.yml", ".env" ,"config/private_pub_thin.yml"
+append :linked_files, "config/database.yml", "config/private_pub.yml", ".env" ,"config/private_pub_thin.yml", "config/production.sphinx.conf"
 
 # Default value for linked_dirs is []
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system" , "public/uploads"

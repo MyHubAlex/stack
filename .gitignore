@@ -27,4 +27,5 @@ config/database.yml
 config/private_pub.yml
 config/*.sphinx.conf
 config/development.sphinx.conf 
+config/production.sphinx.conf 
 db/sphinx
