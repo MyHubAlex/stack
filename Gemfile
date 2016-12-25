@@ -57,8 +57,6 @@ gem 'sidetiq'
 gem 'mysql2'
 gem 'thinking-sphinx'
 gem "binding_of_caller"
-gem 'dotenv'
-gem 'dotenv-deployment', require: 'dotenv/deployment'
 gem 'therubyracer'
 gem 'dotenv-rails'
 
