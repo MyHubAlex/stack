@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  skip_authorization_check
   def confirm_email
     auth = session['devise.omniauth_data']
     if auth == nil

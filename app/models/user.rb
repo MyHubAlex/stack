@@ -3,13 +3,18 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   has_many :questions
   has_many :answers
-  has_many :authorizations
+  has_many :authorizations, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :confirmable, :trackable, :validatable, :omniauthable, omniauth_providers: [:facebook, :twitter]   
 
-  scope :all_user_without_current, ->(id) { where.not(id: id) }       
+  scope :all_user_without_current, ->(id) { where.not(id: id) }  
+  
+  def confirmation_required?(oauth: false)
+    return oauth
+  end 
+
   def belongs_to_obj(object) 
    object.user_id == id 
   end  
@@ -40,6 +45,7 @@ class User < ApplicationRecord
 
   def self.generate(params)
     user = new(params)
+    user.confirmation_required?(oauth: true) 
     user.password = Devise.friendly_token[0, 20]
     user
   end   
