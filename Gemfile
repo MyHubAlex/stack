@@ -55,10 +55,11 @@ gem 'sidekiq'
 gem 'sinatra', require: nil
 gem 'sidetiq'
 gem 'mysql2'
-gem 'thinking-sphinx'
+gem 'thinking-sphinx' 
 gem "binding_of_caller"
 gem 'therubyracer'
 gem 'dotenv-rails'
+gem 'unicorn'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -77,6 +78,7 @@ group :development do
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
   gem 'capistrano-sidekiq', require: false
+  gem 'capistrano3-unicorn', require: false
 end
 
 
